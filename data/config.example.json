@@ -1,0 +1,10 @@
+{
+    "reporting": {
+        "placeholder": [],
+        "tracking_type": ["parent_strategy"]
+    },
+
+    "channel": {
+        "name": "ttjj"
+    }
+}
