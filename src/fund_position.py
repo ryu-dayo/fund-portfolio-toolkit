@@ -17,7 +17,7 @@ class FundPosition:
         
     def sell(self, cash, shares):
         shares_to_sell = shares
-        if shares_to_sell > self.total_shares:
+        if shares_to_sell > round(self.total_shares, 2):
             raise ValueError("Sell quantity exceeds current share balance")
         
         sell_ratio = shares_to_sell / self.total_shares
