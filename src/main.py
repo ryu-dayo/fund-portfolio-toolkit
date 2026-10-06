@@ -1,8 +1,10 @@
-import reporting
+#!/usr/bin/env python3
 import portfolio_data
-from portfolio_snapshot import build_portfolio_snapshot
+import reporting
 from config_loader import load_config
+from portfolio_snapshot import build_portfolio_snapshot
 from transaction_backup import transaction_backup
+
 
 def run_portfolio_snapshot(tracking_keys: list) -> None:
 

@@ -1,3 +1,5 @@
+import requests
+
 from config_loader import load_config
 
 try:
@@ -18,7 +20,7 @@ def get_fund_data(fund_codes: list[str]) -> dict[str, dict[str, str]]:
         raise ValueError(f"Unsupported fund data channel: {channel_name}")
     try:
         response = provider(fund_codes)
-    except Exception:
-        # Gracefully swallow provider issues so the project can run without bundled API clients.
+    except (requests.RequestException, ValueError) as exc:
+        print(f"Failed to fetch fund data from {channel_name}: {exc}")
         return {}
     return response

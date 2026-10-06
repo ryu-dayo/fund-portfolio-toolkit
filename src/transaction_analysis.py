@@ -1,5 +1,7 @@
 import pandas as pd
+
 from fund_position import FundPosition
+
 
 def run_trans_analysis() -> pd.DataFrame:
     csv = pd.read_csv("./data/transactions.csv", dtype={"fund_code": str})

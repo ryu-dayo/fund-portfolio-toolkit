@@ -1,5 +1,6 @@
 import shutil
 from pathlib import Path
+
 from config_loader import load_config
 
 TRANSACTION_SOURCE_FILE = Path("./data/transactions.csv")

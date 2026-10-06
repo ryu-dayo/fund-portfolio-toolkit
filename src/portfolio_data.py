@@ -1,6 +1,6 @@
-from config_loader import load_config
-
 import pandas as pd
+
+from config_loader import load_config
 
 _PLACEHOLDER_COLUMNS: list[str] = ["fund_code", "parent_strategy", "child_strategy", "market_value"]
 

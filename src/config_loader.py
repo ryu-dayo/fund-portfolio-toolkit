@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+
 def load_config(config_path: Path = Path("./data/config.json")) -> dict:
     try:
         with config_path.open(encoding="utf-8") as stream:
