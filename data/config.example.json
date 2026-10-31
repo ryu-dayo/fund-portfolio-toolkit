@@ -4,8 +4,8 @@
         "tracking_type": ["parent_strategy"]
     },
 
-    "channel": {
-        "name": "ttjj"
+    "pricing": {
+        "provider": ""
     },
 
     "export": {

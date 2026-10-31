@@ -212,4 +212,5 @@ __marimo__/
 # Project-specific ignores
 data/config.json
 data/transactions.csv
-src/eastmoney_client.py
+src/providers/*.py
+!src/providers/__init__.py
