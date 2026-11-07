@@ -6,7 +6,9 @@ import pandas as pd
 
 from app_paths import TRANSACTION_CACHE_PATH, TRANSACTION_PATH
 from config_loader import AppConfig
+from file_fingerprint import calculate_file_fingerprint
 from pricing_providers import FundPriceMap, PricingProvider, get_fund_prices
+from transaction_backup import transaction_backup
 from transaction_cache import load_transaction_summary
 
 _PLACEHOLDER_COLUMNS = [
@@ -55,8 +57,13 @@ def build_portfolio_positions(
     *,
     transaction_path: Path = TRANSACTION_PATH,
     transaction_cache_path: Path = TRANSACTION_CACHE_PATH,
+    source_fingerprint: str | None = None,
 ) -> pd.DataFrame:
-    return load_transaction_summary(transaction_path, transaction_cache_path)
+    return load_transaction_summary(
+        transaction_path,
+        transaction_cache_path,
+        source_fingerprint=source_fingerprint
+    )
 
 
 def build_portfolio_snapshot(
@@ -66,10 +73,23 @@ def build_portfolio_snapshot(
     transaction_path: Path = TRANSACTION_PATH,
     transaction_cache_path: Path = TRANSACTION_CACHE_PATH,
 ) -> pd.DataFrame:
+    source_fingerprint = calculate_file_fingerprint(transaction_path)
     positions = build_portfolio_positions(
         transaction_path=transaction_path,
         transaction_cache_path=transaction_cache_path,
+        source_fingerprint=source_fingerprint,
     )
+
+    if config.export_path is not None:
+        try:
+            transaction_backup(
+                config.export_path,
+                transaction_path,
+                source_fingerprint=source_fingerprint,
+            )
+        except OSError as exc:
+            print(f"⚠️ Failed to backup transaction data: {exc}")
+
     price_lookup = fetch_price_lookup(
         positions,
         config.pricing_provider_name,

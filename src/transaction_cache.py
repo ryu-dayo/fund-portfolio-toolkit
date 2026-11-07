@@ -1,4 +1,3 @@
-import hashlib
 import json
 import os
 import tempfile
@@ -6,20 +5,13 @@ from pathlib import Path
 
 import pandas as pd
 
+from file_fingerprint import calculate_file_fingerprint
 from transaction_analysis import (
     TRANSACTION_ANALYSIS_VERSION,
     TRANSACTION_SUMMARY_COLUMNS,
     analyze_transactions,
     read_transactions,
 )
-
-
-def calculate_file_fingerprint(source_path: Path) -> str:
-    digest = hashlib.sha256()
-    with source_path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _read_cache(cache_path: Path, source_fingerprint: str) -> pd.DataFrame | None:
@@ -81,8 +73,15 @@ def _write_cache(
             temporary_path.unlink()
 
 
-def load_transaction_summary(source_path: Path, cache_path: Path) -> pd.DataFrame:
-    source_fingerprint = calculate_file_fingerprint(source_path)
+def load_transaction_summary(
+    source_path: Path,
+    cache_path: Path,
+    *,
+    source_fingerprint: str | None = None,
+) -> pd.DataFrame:
+    if source_fingerprint is None:
+        source_fingerprint = calculate_file_fingerprint(source_path)
+
     cached = _read_cache(cache_path, source_fingerprint)
     if cached is not None:
         return cached.copy()

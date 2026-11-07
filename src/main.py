@@ -8,7 +8,6 @@ from portfolio_snapshot import (
     merge_positions,
 )
 from pricing_providers import PricingProvider
-from transaction_backup import transaction_backup
 
 
 def run_portfolio_snapshot(
@@ -47,7 +46,6 @@ def run_portfolio_snapshot(
 def main() -> None:
     config = load_config()
     run_portfolio_snapshot(config)
-    transaction_backup(config.export_path)
 
 
 if __name__ == "__main__":
